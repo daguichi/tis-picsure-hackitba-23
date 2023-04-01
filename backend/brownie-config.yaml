@@ -1,5 +1,16 @@
-# exclude SafeMath when calculating test coverage
-# https://eth-brownie.readthedocs.io/en/v1.10.3/config.html#exclude_paths
-reports:
-  exclude_contracts:
-    - SafeMath
+dotenv: .env
+
+networks:
+  default: ganache-local
+  
+  goerli:
+    verify: True
+    private_key: ${RINKEBY_PRIVATE_KEY}
+    poh_address: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e'
+  
+  ganache-local:
+    verify: False
+    private_key: ${GANACHE_PRIVATE_KEY}
+  
+  development:
+    verify: False

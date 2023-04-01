@@ -1,11 +1,9 @@
 pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
-interface IProofOfHumanity {
-    function isRegistered(address _address) external view returns (bool);
-}
+import "../interfaces/IProofOfHumanity.sol";
 
-contract MyContract {
+contract MainContract {
 
     struct Comment {
         address user;
@@ -32,9 +30,6 @@ contract MyContract {
 
     /* ---------------------------------- CONSTANTS ---------------------------------- */
 
-    address public proofOfHumanityAddress = 0xC5E9dDebb09Cd64DfaCab4011A0D5cEDaf7c9BDb;
-    IProofOfHumanity public proofOfHumanity = IProofOfHumanity(proofOfHumanityAddress);
-
     uint constant ASSIGNED_VOTERS = 10;
 
     uint constant MAX_VOTERS = 5;
@@ -49,7 +44,9 @@ contract MyContract {
 
     /* ---------------------------------- VARIABLES ---------------------------------- */
 
-    address contractAddress;
+    IProofOfHumanity public proofOfHumanity;
+
+    address ownerAddress;
 
     address[] private usersAddresses;
 
@@ -69,11 +66,15 @@ contract MyContract {
         return false;
     }
 
+    constructor(address _pohAddress) public {
+        proofOfHumanity = IProofOfHumanity(_pohAddress);
+        ownerAddress = msg.sender;
+    }
+
     /* ---------------------------------- AUTHENTICATION ---------------------------------- */
 
-    function _validateIdentity(address _user) private pure returns (bool) {
-        return true;
-        // return proofOfHumanity.isRegistered(msg.sender)
+    function _validateIdentity(address _user) private view returns (bool) {
+        return proofOfHumanity.isRegistered(_user);
     }
 
     function registerUser() public {
@@ -86,7 +87,17 @@ contract MyContract {
         users[msg.sender].tokens = STARTING_TOKENS;
     }
 
-    /* ---------------------------------- LISTING ---------------------------------- */
+    /* ---------------------------------- USER LISTING ---------------------------------- */
+
+    function getAllUsers() public view returns (address[] memory) {
+        return usersAddresses;
+    }
+
+    function getUserByAddress(address _address) public view returns (User memory) {
+        return users[_address];
+    }    
+
+    /* ---------------------------------- IMAGE LISTING ---------------------------------- */
 
     function getAllImages() public view returns (string[] memory) {
         return imageUrls;
@@ -133,12 +144,10 @@ contract MyContract {
             images[_url].negativeVotes.push(msg.sender);
 
         if(images[_url].positiveVotes.length + images[_url].negativeVotes.length == MAX_VOTERS)
-            closeVotation(_url);
+            _closeVotation(_url);
     }
 
-    function closeVotation(string memory _url) public {
-        require(images[_url].owner == msg.sender || images[_url].owner == address(this), "Not image owner");
-
+    function _closeVotation(string memory _url) private {
         images[_url].isVotationOpen = false;
 
         bool imageIsTrue = images[_url].positiveVotes.length > images[_url].negativeVotes.length;
