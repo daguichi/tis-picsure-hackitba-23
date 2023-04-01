@@ -5,7 +5,7 @@ import SearchBar from "../components/SearchBar";
 import Web3 from 'web3';
 import { useMetaMask } from "metamask-react";
 import contractABI from '../MainContract.json'
-import { getAllUsers, registerUser } from "../contractMethods";
+import { getAllImages, getAllUsers, registerUser } from "../contractMethods";
 // function ConnectButton({ onConnect, connected }) {
 //   async function connectMetamask() {
 //     if (window.ethereum) { // Check if Metamask is installed
@@ -39,7 +39,7 @@ function ConnectedView() {
 
   useEffect(() => {
     async function getImages() {
-      const images = await getImages();
+      const images = await getAllImages();
       setImages(images);
     }
     getImages();
