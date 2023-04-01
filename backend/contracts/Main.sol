@@ -42,7 +42,7 @@ contract MainContract {
 
     uint constant VERIFY_REWARD = 2;
 
-    uint constant STARTING_TOKENS = 5;
+    uint constant STARTING_TOKENS = 1000;
 
     /* ---------------------------------- VARIABLES ---------------------------------- */
 
@@ -176,7 +176,7 @@ contract MainContract {
             _closeVotation(_url);
     }
 
-    function _closeVotation(string memory _url) private {
+    function _closeVotation(string memory _url) public {
         images[_url].isVotationOpen = false;
 
         bool imageIsTrue = images[_url].positiveVotes.length > images[_url].negativeVotes.length;
@@ -233,6 +233,19 @@ contract MainContract {
         images[_url].uploadDate = block.timestamp;
         images[_url].isVotationOpen = true;
         images[_url].assignedVoters = _getRandomSubset(usersAddresses, ASSIGNED_VOTERS);
+    }
+
+    /* ---------------------------------- TOKEN MANAGEMENT ---------------------------------- */
+
+    function addTokens(address _userAddress, uint amount) public {
+        require(msg.sender == ownerAddress, "Only owner can mint tokens");
+        users[_userAddress].tokens += amount;
+    }
+
+    function transferTokens(address _destinyAddress, uint amount) public {
+        require(users[msg.sender].tokens > amount, "Not enough tokens");
+        users[msg.sender].tokens -= amount;
+        users[_destinyAddress].tokens += amount;
     }
 
 }
