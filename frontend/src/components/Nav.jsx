@@ -125,7 +125,7 @@ const NavLink = ({ children }) => (
 const Nav = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
-
+  const { account } = useMetaMask();
 
   return (
     <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -148,28 +148,33 @@ const Nav = () => {
             ))}
           </HStack> */}
         </HStack>
-        <Flex alignItems={'center'}>
-          <ColorModeSwitcher />
-          <UploadButton />
-          <Menu>
-            <MenuButton
-              as={Button}
-              rounded={'full'}
-              variant={'link'}
-              cursor={'pointer'}
-              minW={0}>
-              <Avatar
-                size={'sm'}
+        {
+          account &&
 
-              />
-            </MenuButton>
-            <MenuList>
-              <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
-              {/* <MenuDivider />
+          <Flex alignItems={'center'}>
+            <ColorModeSwitcher />
+            <UploadButton />
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded={'full'}
+                variant={'link'}
+                cursor={'pointer'}
+                minW={0}>
+                <Avatar
+                  size={'sm'}
+
+                />
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
+                {/* <MenuDivider />
               <MenuItem>Log out</MenuItem> */}
-            </MenuList>
-          </Menu>
-        </Flex>
+              </MenuList>
+            </Menu>
+          </Flex>
+        }
+
       </Flex>
 
       {isOpen ? (
