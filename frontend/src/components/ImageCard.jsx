@@ -26,7 +26,7 @@ function ImageCard(props) {
       transition="all 0.2s"
       overflow="hidden"
       onClick={() => {
-        navigate(`/image?url=${encodeURIComponent(props.url)}`);
+        navigate(`/image/${props.url}`);
       }
       }
     >

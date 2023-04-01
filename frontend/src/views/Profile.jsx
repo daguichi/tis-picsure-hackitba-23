@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useMetaMask } from 'metamask-react';
-import { Box, Text, useColorModeValue, Avatar, HStack } from '@chakra-ui/react';
-import { getImagesByOwningUser, getImagesByAssignedUser } from "../contractMethods";
+import { Box, Text, useColorModeValue, Avatar, HStack, VStack } from '@chakra-ui/react';
+import { getImagesByOwningUser, getImagesByAssignedUser, getUserByAddress } from "../contractMethods";
 import ImageCard from "../components/ImageCard";
 
 
 const ProfileView = () => {
   const { status, account, balance } = useMetaMask();
 
+  const [userData, setUserData] = useState([]);
   const [ownImages, setOwnImages] = useState([]);
   const [assignedImages, setAssignedImages] = useState([]);
 
   useEffect(() => {
+    getUserByAddress(account).then((d) => setUserData(d))
     getImagesByOwningUser(account).then((d) => setOwnImages(d))
     getImagesByAssignedUser(account).then((d) => setAssignedImages(d))
   }, [account]);
@@ -20,17 +22,28 @@ const ProfileView = () => {
     <Box p={6} boxShadow="md" rounded="md"
       bgColor={useColorModeValue("white", "gray.900")}
     >
-      <Avatar alt="Profile avatar" rounded="full" boxSize="150px" />
-      <Text fontSize="2xl" fontWeight="bold" mt={4}>
-        Account
-      </Text>
-      <Text fontSize="lg" color="gray.500">
-        {account}
-      </Text>
-      <Text fontSize="lg" color="green.500">
-        {balance}
-      </Text>
-      <Text fontSize="2xl" fontWeight="bold" mt={4}>
+      <HStack mt={4}>
+        <Avatar alt="Profile avatar" rounded="full" boxSize="150px" />
+        <VStack justifyContent="left" ml={16}>
+          <Text fontSize="2xl" fontWeight="bold">
+            Vitalik Butherin
+          </Text>
+          <HStack>
+            <Text fontSize="2xl">Account:</Text>
+            <Text fontSize="lg" color="gray.500">{account}</Text>
+          </HStack>
+          <HStack>
+            <Text fontSize="2xl">Reputation:</Text>
+            <Text fontSize="lg" color="gray.500">{userData.wins}</Text>
+          </HStack>
+          <HStack>
+            <Text fontSize="2xl">Tokens:</Text>
+            <Text fontSize="lg" color="gray.500">{userData.tokens}</Text>
+          </HStack>
+        </VStack>
+      </HStack>
+
+      <Text fontSize="2xl" fontWeight="bold" mt={8}>
         Your uploaded images
       </Text>
       <HStack spacing={4} justifyContent="center">
