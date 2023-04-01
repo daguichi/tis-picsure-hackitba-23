@@ -21,6 +21,7 @@ import {
 } from "react-router-dom";
 import MainLayout from './layouts/MainLayout';
 import Home from './views/Home';
+import ImageDetail from './views/ImageDetail';
 
 function App() {
   return (
@@ -29,29 +30,10 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLayout />} >
             <Route index element={<Home />} />
+            <Route path='image/:id' element={<ImageDetail />} />
           </Route>
         </Routes>
       </Router>
-      {/* <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn Chakra
-            </Link>
-          </VStack>
-        </Grid>
-      </Box> */}
     </ChakraProvider>
   );
 }

@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 import { ColorModeSwitcher } from '../ColorModeSwitcher';
+import { useNavigate } from 'react-router-dom';
 
 const Links = ['Dashboard', 'Projects', 'Team'];
 
@@ -37,7 +38,7 @@ const NavLink = ({ children }) => (
 
 const Nav = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const navigate = useNavigate();
   return (
     <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
@@ -49,7 +50,7 @@ const Nav = () => {
           onClick={isOpen ? onClose : onOpen}
         />
         <HStack spacing={8} alignItems={'center'}>
-          <Box>PicSure</Box>
+          <Box cursor={'pointer'} onClick={() => navigate('/')}>PicSure</Box>
           {/* <HStack
             as={'nav'}
             spacing={4}
@@ -60,7 +61,7 @@ const Nav = () => {
           </HStack> */}
         </HStack>
         <Flex alignItems={'center'}>
-          {/* <ColorModeSwitcher /> */}
+          <ColorModeSwitcher />
           <Button
             variant={'solid'}
             colorScheme={'teal'}
@@ -78,16 +79,13 @@ const Nav = () => {
               minW={0}>
               <Avatar
                 size={'sm'}
-                src={
-                  'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                }
+                
               />
             </MenuButton>
             <MenuList>
-              <MenuItem>Link 1</MenuItem>
-              <MenuItem>Link 2</MenuItem>
+              <MenuItem>Profile</MenuItem>
               <MenuDivider />
-              <MenuItem>Link 3</MenuItem>
+              <MenuItem>Log out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
