@@ -11,6 +11,7 @@ contract MainContract {
     }
 
     struct Image {
+        string url;
         address owner;
         string description;
         uint uploadDate;
@@ -22,7 +23,8 @@ contract MainContract {
     }
 
     struct User {
-        uint reputation;
+        address _address;
+        uint wins;
         uint tokens;
     }
 
@@ -84,13 +86,20 @@ contract MainContract {
         
         usersAddresses.push(msg.sender);
 
+        users[msg.sender]._address = msg.sender;
         users[msg.sender].tokens = STARTING_TOKENS;
+        users[msg.sender].wins = 0;
     }
 
     /* ---------------------------------- USER LISTING ---------------------------------- */
 
-    function getAllUsers() public view returns (address[] memory) {
-        return usersAddresses;
+    function getAllUsers() public view returns (User[] memory) {
+        User[] memory finalResult = new User[](usersAddresses.length);
+
+        for (uint256 i = 0; i < usersAddresses.length; i++)
+            finalResult[i] = users[usersAddresses[i]];
+        
+        return finalResult;
     }
 
     function getUserByAddress(address _address) public view returns (User memory) {
@@ -99,30 +108,50 @@ contract MainContract {
 
     /* ---------------------------------- IMAGE LISTING ---------------------------------- */
 
-    function getAllImages() public view returns (string[] memory) {
-        return imageUrls;
+    function getAllImages() public view returns (Image[] memory) {
+        Image[] memory finalResult = new Image[](imageUrls.length);
+
+        for (uint256 i = 0; i < imageUrls.length; i++)
+            finalResult[i] = images[imageUrls[i]];
+        
+        return finalResult;
+    }
+
+    function getImagesByOwningUser(address _address) public view returns (Image[] memory) {
+        string[] memory result = new string[](imageUrls.length);
+
+        uint count = 0;
+        for (uint i = 0; i < imageUrls.length; i++)
+            if (images[imageUrls[i]].owner == _address)
+                result[count++] = imageUrls[i];
+
+        Image[] memory finalResult = new Image[](count);
+        for (uint256 i = 0; i < count; i++)
+            finalResult[i] = images[result[i]];
+
+        return finalResult;
+    }
+
+    function getImagesByAssignedUser(address _address) public view returns (Image[] memory) {
+        string[] memory result = new string[](imageUrls.length);
+
+        uint count = 0;
+        for (uint i = 0; i < imageUrls.length; i++)
+            if (arrayContains(images[imageUrls[i]].assignedVoters, _address))
+                result[count++] = imageUrls[i];
+
+        Image[] memory finalResult = new Image[](count);
+        for (uint256 i = 0; i < count; i++)
+            finalResult[i] = images[result[i]];
+
+        return finalResult;
     }
 
     function getImageByUrl(string memory _url) public view returns (Image memory) {
         return images[_url];
     }
 
-    /* ---------------------------------- VOTING ---------------------------------- */
-
-    function getMyAssignations() public view returns (string[] memory) {
-        string[] memory result = new string[](imageUrls.length);
-
-        uint count = 0;
-        for (uint i = 0; i < imageUrls.length; i++)
-            if (arrayContains(images[imageUrls[i]].assignedVoters, msg.sender))
-                result[count++] = imageUrls[i];
-
-        string[] memory finalResult = new string[](count);
-        for (uint256 i = 0; i < count; i++)
-            finalResult[i] = result[i];
-
-        return finalResult;
-    }
+    /* ---------------------------------- IMAGE VOTING ---------------------------------- */
 
     function voteImage(string memory _url, Vote _vote) public {
         require(images[_url].assignedVoters.length != 0, "Image doesnt exist");
@@ -154,16 +183,22 @@ contract MainContract {
 
         for (uint i = 0; i < images[_url].positiveVotes.length; i++) {
             address voterAdd = images[_url].positiveVotes[i];
-            users[voterAdd].tokens += imageIsTrue ? VERIFY_REWARD : 0;
+            if(imageIsTrue) {
+                users[voterAdd].tokens += VERIFY_REWARD;
+                users[voterAdd].wins += 1;
+            }
         }
 
         for (uint i = 0; i < images[_url].negativeVotes.length; i++) {
             address voterAdd = images[_url].positiveVotes[i];
-            users[voterAdd].tokens += !imageIsTrue ? VERIFY_REWARD : 0;
+            if(!imageIsTrue) {
+                users[voterAdd].tokens += VERIFY_REWARD;
+                users[voterAdd].wins += 1;
+            }
         }
     }
 
-    /* ---------------------------------- COMMENTING ---------------------------------- */
+    /* ---------------------------------- IMAGE COMMENTING ---------------------------------- */
 
     function commentImage(string memory _url, string memory _comment) public {
         require(images[_url].assignedVoters.length != 0, "Image doesnt exist");
@@ -173,7 +208,7 @@ contract MainContract {
         images[_url].comments.push(Comment(msg.sender, _comment));
     }    
 
-    /* ---------------------------------- PUBLISHING ---------------------------------- */
+    /* ---------------------------------- IMAGE PUBLISHING ---------------------------------- */
 
     function _getRandomSubset(address[] memory array, uint n) private view returns (address[] memory) {
         address[] memory subset = new address[](n);
@@ -192,6 +227,7 @@ contract MainContract {
 
         imageUrls.push(_url);
         
+        images[_url].url = _url;
         images[_url].owner = msg.sender;
         images[_url].description = _desc;
         images[_url].uploadDate = block.timestamp;
