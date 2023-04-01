@@ -11,11 +11,28 @@ import {
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { Logo } from './Logo';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link as RouterLink,
+  Navigate,
+  Routes
+} from "react-router-dom";
+import MainLayout from './layouts/MainLayout';
+import Home from './views/Home';
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
+      <Router basename={process.env.PUBLIC_URL}>
+        <Routes>
+          <Route path="/" element={<MainLayout />} >
+            <Route index element={<Home />} />
+          </Route>
+        </Routes>
+      </Router>
+      {/* <Box textAlign="center" fontSize="xl">
         <Grid minH="100vh" p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />
           <VStack spacing={8}>
@@ -34,7 +51,7 @@ function App() {
             </Link>
           </VStack>
         </Grid>
-      </Box>
+      </Box> */}
     </ChakraProvider>
   );
 }
