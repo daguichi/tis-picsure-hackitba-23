@@ -6,6 +6,16 @@ const data = {
   id: 1,
   valid: true,
   validness: 0.9,
+  evidences: [
+    {
+      user: '0xd34db33f',
+      evidence: 'This is a valid image of the pope',
+    },
+    {
+      user: '0xdeadbeef',
+      evidence: 'Mira la cara de este papa, es un robot',
+    }
+  ]
 };
 
 
@@ -45,13 +55,31 @@ const ImageDetail = () => {
           Invalid
         </Button>
       </Box>
-      <Box>
+      <Box bgColor={useColorModeValue("white", "gray.900")}
+        rounded="lg"
+        p={8}
+        boxShadow="lg">
         <Heading>Voted by {noOfVoters} persons</Heading>
         <VStack>
           <Text>Valid: {Math.round(noOfVoters * data.validness, 2)}</Text>
           <Text>Invalid: {Math.round(noOfVoters * (1 - data.validness), 2)}</Text>
         </VStack>
-
+      </Box>
+      <Box bgColor={useColorModeValue("white", "gray.900")}
+        rounded="lg"
+        p={8}
+        boxShadow="lg"
+        gap={6}
+        display={'flex'}
+        flexDirection={'column'}
+        >
+        <Heading>Evidences</Heading>
+        {data.evidences.map((ev) => (
+          <Box border={'1px'} borderColor={'white'} borderRadius={'lg'} padding={4}>
+            <Text>Evidence by {ev.user}</Text>
+            <Text>{ev.evidence}</Text>
+          </Box>
+        ))}
       </Box>
     </VStack>
   );

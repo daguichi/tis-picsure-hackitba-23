@@ -22,6 +22,7 @@ import {
 import MainLayout from './layouts/MainLayout';
 import Home from './views/Home';
 import ImageDetail from './views/ImageDetail';
+import Profile from './views/Profile';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/" element={<MainLayout />} >
             <Route index element={<Home />} />
             <Route path='image/:id' element={<ImageDetail />} />
+            <Route path='profile' element={<Profile />} />
           </Route>
         </Routes>
       </Router>

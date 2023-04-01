@@ -15,10 +15,71 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  ModalOverlay,
+  ModalContent,
+  Modal,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  FormControl,
+  FormLabel,
+  Input,
+  ModalFooter,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 import { ColorModeSwitcher } from '../ColorModeSwitcher';
 import { useNavigate } from 'react-router-dom';
+import { useMetaMask } from 'metamask-react';
+
+
+
+function UploadButton() {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  return (
+    <>
+      <Button
+        variant={'solid'}
+        colorScheme={'teal'}
+        size={'sm'}
+        mr={4}
+        leftIcon={<AddIcon />}
+        onClick={onOpen}
+      >
+        Upload
+      </Button>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Upload your image</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Title</FormLabel>
+              <Input placeholder='Title' />
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>URL</FormLabel>
+              <Input placeholder='URL' />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3}>
+              Upload
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  )
+}
 
 const Links = ['Dashboard', 'Projects', 'Team'];
 
@@ -39,6 +100,8 @@ const NavLink = ({ children }) => (
 const Nav = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+
+  
   return (
     <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
@@ -62,14 +125,7 @@ const Nav = () => {
         </HStack>
         <Flex alignItems={'center'}>
           <ColorModeSwitcher />
-          <Button
-            variant={'solid'}
-            colorScheme={'teal'}
-            size={'sm'}
-            mr={4}
-            leftIcon={<AddIcon />}>
-            Upload
-          </Button>
+          <UploadButton />
           <Menu>
             <MenuButton
               as={Button}
@@ -79,13 +135,13 @@ const Nav = () => {
               minW={0}>
               <Avatar
                 size={'sm'}
-                
+
               />
             </MenuButton>
             <MenuList>
-              <MenuItem>Profile</MenuItem>
-              <MenuDivider />
-              <MenuItem>Log out</MenuItem>
+              <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
+              {/* <MenuDivider />
+              <MenuItem>Log out</MenuItem> */}
             </MenuList>
           </Menu>
         </Flex>

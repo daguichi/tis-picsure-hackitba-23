@@ -1,4 +1,5 @@
 import { ColorModeScript } from '@chakra-ui/react';
+import { MetaMaskProvider } from 'metamask-react';
 import React, { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './App';
@@ -10,8 +11,10 @@ const root = ReactDOM.createRoot(container);
 
 root.render(
   <StrictMode>
-    <ColorModeScript />
-    <App />
+    <MetaMaskProvider>
+      <ColorModeScript />
+      <App />
+    </MetaMaskProvider>
   </StrictMode>
 );
 
