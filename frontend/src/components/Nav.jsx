@@ -26,15 +26,25 @@ import {
   Input,
   ModalFooter,
 } from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 import { ColorModeSwitcher } from '../ColorModeSwitcher';
 import { useNavigate } from 'react-router-dom';
 import { useMetaMask } from 'metamask-react';
-
-
+import { publishImage } from '../contractMethods';
 
 function UploadButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const onSubmit = async (data) => {
+    console.log(data)
+    
+    const { title, url } = data
+
+    await publishImage(url, title)
+  }
+
+  const {handleSubmit, register} = useForm()
 
   return (
     <>
@@ -57,24 +67,26 @@ function UploadButton() {
         <ModalContent>
           <ModalHeader>Upload your image</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl>
-              <FormLabel>Title</FormLabel>
-              <Input placeholder='Title' />
-            </FormControl>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <ModalBody pb={6}>
+              <FormControl>
+                <FormLabel>Title</FormLabel>
+                <Input placeholder='Title' {...register('title')}/>
+              </FormControl>
 
-            <FormControl mt={4}>
-              <FormLabel>URL</FormLabel>
-              <Input placeholder='URL' />
-            </FormControl>
-          </ModalBody>
+              <FormControl mt={4}>
+                <FormLabel>URL</FormLabel>
+                <Input placeholder='URL' {...register('url')}/>
+              </FormControl>
+            </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme='blue' mr={3}>
-              Upload
-            </Button>
-            <Button onClick={onClose}>Cancel</Button>
-          </ModalFooter>
+            <ModalFooter>
+              <Button type='submit' colorScheme='blue' mr={3}>
+                Upload
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
     </>
@@ -101,7 +113,7 @@ const Nav = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
-  
+
   return (
     <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
       <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
