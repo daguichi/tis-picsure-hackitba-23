@@ -17,16 +17,16 @@ function ConnectedView() {
     <>
       <SearchBar />
       {
-        images.length === 0 
-        ? <Text>No images found</Text>
-        : <Wrap spacing={4} justifyContent="center">
+        images.length === 0
+          ? <Text>No images found</Text>
+          : <Wrap spacing={4} justifyContent="center">
             {images.map(image => (
-              <ImageCard key={image.url} description={image.description} url={image.url}/>
+              <ImageCard key={image.url} description={image.description} url={image.url} />
             ))}
           </Wrap>
 
       }
-      
+
     </>
   );
 }
@@ -35,22 +35,24 @@ function ConnectedView() {
 const MetamaskStatus = () => {
   const { status, connect, account, chainId, ethereum } = useMetaMask();
 
-  if (status === "initializing") return <div>Synchronisation with MetaMask ongoing...</div>
+  if (status === "initializing") return <Text>Synchronisation with MetaMask ongoing...</Text>
 
-  if (status === "unavailable") return <div>MetaMask not available :(</div>
+  if (status === "unavailable") return <Text>MetaMask not available :(</Text>
 
-  if (status === "notConnected") return <button onClick={connect}>Connect to MetaMask</button>
+  if (status === "notConnected") return <Button onClick={connect}>Connect to MetaMask</Button>
 
-  if (status === "connecting") return <div>Connecting...</div>
+  if (status === "connecting") return <Text>Connecting...</Text>
 
-  if (status === "connected") return <div>Connected account {account} on chain ID {chainId}</div>
+  if (status === "connected") return <Text>Connected account <b>{account}</b> on chain ID <b>{chainId}</b></Text>
 
 }
 
 const Home = () => {
   const { status } = useMetaMask();
   const [users, setUsers] = useState([]);
-  const {account} = useMetaMask();
+  const { account } = useMetaMask();
+  const [registered, setRegistered] = useState(false);
+
   const handleGetAllUsers = async () => {
     const result = await getAllUsers();
     console.log(result)
@@ -64,14 +66,21 @@ const Home = () => {
 
   const isRegistered = async () => {
     const registeredMembers = await getAllUsers();
-    return registeredMembers.includes(account);
+    return registeredMembers.some(member => member._address.toLowerCase() === account.toLowerCase());
   }
+
+
+  useEffect(() => {
+    isRegistered().then((d) => setRegistered(d))
+  }, [account]);
 
   return (
     <VStack justify="center" spacing={10}>
       <MetamaskStatus />
       {/* <Button onClick={handleGetAllUsers}>Get All users</Button> */}
-      <Button onClick={handleRegister}>Register</Button>
+      {
+        registered ? <Text>You are already registered!</Text> : <Button onClick={handleRegister}>Register</Button>
+      }
       <ul>
         {users.map(user => (
           <li key={user}>{user}</li>
