@@ -2,7 +2,7 @@ import Web3 from 'web3';
 import contractABI from './MainContract.json';
 
 const web3 = new Web3(window.ethereum);
-const contractAddress = '0x3C2bcb698460B0aBD05eCd179e8f27f840b03CB5';
+const contractAddress = '0x48619D476a1a79d93215cF457e77092259699a1f';
 const contract = new web3.eth.Contract(contractABI.abi, contractAddress);
 
 export const getAllUsers = async () => {
@@ -35,6 +35,10 @@ export const getImageByUrl = async (url) => {
 
 export const getImagesByOwningUser = async (address) => {
   return await contract.methods.getImagesByOwningUser(address).call();
+}
+
+export const getImagesByAssignedUser = async (address) => {
+  return await contract.methods.getImagesByAssignedUser(address).call();
 }
 
 export const getUserAssignations = async (address) => {
