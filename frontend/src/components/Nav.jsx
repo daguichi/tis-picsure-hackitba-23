@@ -25,6 +25,7 @@ import {
   FormLabel,
   Input,
   ModalFooter,
+  useToast,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
@@ -35,16 +36,28 @@ import { publishImage } from '../contractMethods';
 
 function UploadButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const toast = useToast()
 
   const onSubmit = async (data) => {
     console.log(data)
-    
+
     const { title, url } = data
 
-    await publishImage(url, title)
+    const res = await publishImage(url, title)
+    if (res.status === true) {
+      toast(
+        {
+          title: 'Image uploaded',
+          status: 'success',
+          isClosable: true,
+          duration: 3000,
+        }
+      )
+      onClose()
+    }
   }
 
-  const {handleSubmit, register} = useForm()
+  const { handleSubmit, register } = useForm()
 
   return (
     <>
@@ -71,12 +84,12 @@ function UploadButton() {
             <ModalBody pb={6}>
               <FormControl>
                 <FormLabel>Title</FormLabel>
-                <Input placeholder='Title' {...register('title')}/>
+                <Input placeholder='Title' {...register('title')} />
               </FormControl>
 
               <FormControl mt={4}>
                 <FormLabel>URL</FormLabel>
-                <Input placeholder='URL' {...register('url')}/>
+                <Input placeholder='URL' {...register('url')} />
               </FormControl>
             </ModalBody>
 

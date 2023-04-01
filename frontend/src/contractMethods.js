@@ -63,5 +63,5 @@ export const publishImage = async (url, desc) => {
   const accounts = await window.ethereum.enable();
   const account = accounts[0];
   console.log('sending from ', account)
-  await contract.methods.publishImage(url, desc).send({ from: account });
+  return await contract.methods.publishImage(url, desc).send({ from: account });
 }

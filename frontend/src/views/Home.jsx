@@ -1,4 +1,4 @@
-import { Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, Text, VStack, Wrap } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import ImageCard from "../components/ImageCard";
 import SearchBar from "../components/SearchBar";
@@ -19,11 +19,11 @@ function ConnectedView() {
       {
         images.length === 0 
         ? <Text>No images found</Text>
-        : <HStack spacing={4} justifyContent="center">
+        : <Wrap spacing={4} justifyContent="center">
             {images.map(image => (
               <ImageCard key={image.url} description={image.description} url={image.url}/>
             ))}
-          </HStack>
+          </Wrap>
 
       }
       
@@ -50,7 +50,7 @@ const MetamaskStatus = () => {
 const Home = () => {
   const { status } = useMetaMask();
   const [users, setUsers] = useState([]);
-
+  const {account} = useMetaMask();
   const handleGetAllUsers = async () => {
     const result = await getAllUsers();
     console.log(result)
@@ -62,10 +62,15 @@ const Home = () => {
     console.log(result)
   };
 
+  const isRegistered = async () => {
+    const registeredMembers = await getAllUsers();
+    return registeredMembers.includes(account);
+  }
+
   return (
     <VStack justify="center" spacing={10}>
       <MetamaskStatus />
-      <Button onClick={handleGetAllUsers}>Get All users</Button>
+      {/* <Button onClick={handleGetAllUsers}>Get All users</Button> */}
       <Button onClick={handleRegister}>Register</Button>
       <ul>
         {users.map(user => (
