@@ -12,7 +12,7 @@ networks:
     verify: False
     private_key: ${GANACHE_PRIVATE_KEY}
     poh_address: '0x91F95Bb79d97bAEfdE6Ab4E431873b4471111Df9'
-    main_address: '0xBfaA0737F4cc5bFc459D52Ca0f60FDE346651E55'
+    main_address: '0x38976Fd5f0cba4a8F1994ED7BBD9BC4c63368512'
   
   development:
     verify: False
