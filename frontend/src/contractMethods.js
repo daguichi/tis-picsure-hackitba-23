@@ -2,7 +2,7 @@ import Web3 from 'web3';
 import contractABI from './MainContract.json';
 
 const web3 = new Web3(window.ethereum);
-const contractAddress = '0xfc123302fEd440d953423818a00E7fFd8Ea3B01B';
+const contractAddress = '0xBfaA0737F4cc5bFc459D52Ca0f60FDE346651E55';
 const contract = new web3.eth.Contract(contractABI.abi, contractAddress);
 
 export const getAllUsers = async () => {

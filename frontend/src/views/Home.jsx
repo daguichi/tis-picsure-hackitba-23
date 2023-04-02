@@ -16,7 +16,7 @@ function ConnectedView() {
 
   return (
     <>
-      <Divider />
+      {/* <Divider /> */}
 
       <Heading>Últimas imágenes 📷</Heading>
       {/* <SearchBar /> */}
@@ -68,14 +68,14 @@ const Home = () => {
     <VStack justify="center" spacing={10}>
       {/* <MetamaskStatus /> */}
       {/* <Button onClick={handleGetAllUsers}>Get All users</Button> */}
-      {
+      {/* {
         registered ? <Text>Ya estás registrado!</Text> : <Button onClick={handleRegister}>Registrarme</Button>
-      }
-      <ul>
+      } */}
+      {/* <ul>
         {users.map(user => (
           <li key={user}>{user}</li>
         ))}
-      </ul>
+      </ul> */}
       {
         status === "connected" ? <ConnectedView /> : <></>
       }

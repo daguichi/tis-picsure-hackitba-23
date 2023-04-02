@@ -50,12 +50,15 @@ const ProfileView = () => {
       <HStack mt={4}>
         <Avatar src={getProfilePicture(account)} alt="Profile avatar" rounded="full" boxSize="150px" />
         <VStack ml={16} alignItems="flex-start">
+          <Text fontSize="2xl" fontWeight="bold">
+            {userData.name}
+          </Text>
           <HStack>
             <Text fontSize="2xl">Cuenta:</Text>
             <Text fontSize="lg" color="gray.500">{account}</Text>
           </HStack>
           <HStack>
-            <Text fontSize="2xl">Tokens:</Text>
+            <Text fontSize="2xl">Tokens (PST):</Text>
             <Text fontSize="lg" color="gray.500">{userData.tokens}{'      '}</Text>
             <Button ml={8} colorScheme="blue" size="sm" onClick={() => { }}>Buy</Button>
           </HStack>
@@ -66,9 +69,14 @@ const ProfileView = () => {
       </HStack>
       <Divider my={8} />
       <Text fontSize="3xl" fontWeight="bold" my={8}>
-        Reputación del {userData.wins}%
+        Reputación del {userData.validatorReputation}% como <i>Validador</i>
       </Text>
-      <Progress colorScheme='green' size='lg' value={userData.wins} mt={8} />
+      <Progress colorScheme='green' size='lg' value={userData.validatorReputation} mt={8} />
+      <Divider my={8} />
+      <Text fontSize="3xl" fontWeight="bold" my={8}>
+        Reputación del {userData.creatorReputation}% como <i>Creador</i>
+      </Text>
+      <Progress colorScheme='blue' size='lg' value={userData.creatorReputation} mt={8} />
 
       <Divider my={8} />
       <Text fontSize="3xl" fontWeight="bold" my={8}>

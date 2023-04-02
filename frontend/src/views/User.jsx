@@ -34,7 +34,7 @@ const User = () => {
         <Avatar src={getProfilePicture(account)} alt="Profile avatar" rounded="full" boxSize="150px" />
         <VStack ml={16} alignItems="flex-start">
           <Text fontSize="2xl" fontWeight="bold">
-            Vitalik Butherin
+            {userData.name}
           </Text>
           <HStack>
             <Text fontSize="2xl">Cuenta:</Text>
@@ -42,7 +42,7 @@ const User = () => {
           </HStack>
 
           <HStack>
-            <Text fontSize="2xl">Tokens:</Text>
+            <Text fontSize="2xl">Tokens (PST):</Text>
             <Text fontSize="lg" color="gray.500">{userData.tokens}</Text>
           </HStack>
         </VStack>
@@ -50,8 +50,15 @@ const User = () => {
       </HStack>
       <Divider my={8} />
       <Text fontSize="3xl" fontWeight="bold" my={8}>
-        Reputación del {userData.wins}%
+        Reputación del {userData.validatorReputation}% como <i>Validador</i>
       </Text>
+      <Progress colorScheme='green' size='lg' value={userData.validatorReputation} mt={8} />
+      <Divider my={8} />
+      <Text fontSize="3xl" fontWeight="bold" my={8}>
+        Reputación del {userData.creatorReputation}% como <i>Creador</i>
+      </Text>
+      <Progress colorScheme='blue' size='lg' value={userData.creatorReputation} mt={8} />
+
       <Progress colorScheme='green' size='lg' value={userData.wins} mt={8} />
       <Divider my={8} />
 
@@ -71,7 +78,7 @@ const User = () => {
       </Wrap>
       <Text fontSize="3xl" fontWeight="bold" mt={4}>
         Imágenes asignadas al usuario para votar      </Text>
-        <Wrap spacing={4} justifyContent="center" align="center">
+      <Wrap spacing={4} justifyContent="center" align="center">
         {assignedImages.length === 0 ? <Text fontSize="lg" color="gray.500">Sin imágenes</Text>
           :
           assignedImages.map(image => (

@@ -171,7 +171,9 @@ const ImageDetail = () => {
 
                 {data.assignedVoters.length === 0 ? <Text>Sin votantes asignados</Text>
                   : data.assignedVoters.map((voter) => (
-                    <Tooltip label={voter}>
+                    <Tooltip label={
+                      voter
+                    }>
                       <Avatar key={voter} src={getProfilePicture(voter)} cursor={'pointer'} onClick={() => navigate('/user/' + voter)} />
                     </Tooltip>
                   ))}
