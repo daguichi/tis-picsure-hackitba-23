@@ -31,7 +31,7 @@ const ImageDetail = () => {
         positiveVotes: response.positiveVotes,
         negativeVotes: response.negativeVotes,
         comments: response.comments,
-        validness: response.positiveVotes / noOfVoters
+        validness: response.positiveVotes.length / response.assignedVoters.length
       });
     }
     getImage();
@@ -42,7 +42,6 @@ const ImageDetail = () => {
       {
         data && (
           <VStack>
-
             <Box
               bgColor={bg1}
               rounded="lg"
