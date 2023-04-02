@@ -51,7 +51,7 @@ function UploadButton() {
     if (res.status === true) {
       toast(
         {
-          title: 'Image uploaded',
+          title: 'Imagen subida!',
           status: 'success',
           isClosable: true,
           duration: 3000,
@@ -73,7 +73,7 @@ function UploadButton() {
         leftIcon={<AddIcon />}
         onClick={onOpen}
       >
-        Upload
+        Subir imagen
       </Button>
 
       <Modal
@@ -82,13 +82,13 @@ function UploadButton() {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Upload your image</ModalHeader>
+          <ModalHeader>Subir imagen</ModalHeader>
           <ModalCloseButton />
           <form onSubmit={handleSubmit(onSubmit)}>
             <ModalBody pb={6}>
               <FormControl>
-                <FormLabel>Title</FormLabel>
-                <Input placeholder='Title' {...register('title')} />
+                <FormLabel>Titulo</FormLabel>
+                <Input placeholder='Titulo' {...register('title')} />
               </FormControl>
 
               <FormControl mt={4}>
@@ -99,9 +99,9 @@ function UploadButton() {
 
             <ModalFooter>
               <Button type='submit' colorScheme='blue' mr={3}>
-                Upload
+                Subir
               </Button>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button onClick={onClose}>Cancelar</Button>
             </ModalFooter>
           </form>
         </ModalContent>
@@ -185,7 +185,7 @@ const Nav = () => {
                 />
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
+                <MenuItem onClick={() => navigate('/profile')}>Perfil</MenuItem>
                 {/* <MenuDivider />
               <MenuItem>Log out</MenuItem> */}
               </MenuList>

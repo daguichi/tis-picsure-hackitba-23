@@ -16,12 +16,13 @@ function ConnectedView() {
 
   return (
     <>
-      <Divider my={4} />
-      <Heading>Latest images 📷</Heading>
+      <Divider />
+
+      <Heading>Últimas imágenes 📷</Heading>
       {/* <SearchBar /> */}
       {
         images.length === 0
-          ? <Text>No images found</Text>
+          ? <Text>Sin imágenes encontradas</Text>
           : <Wrap spacing={4} justifyContent="center">
             {images.map(image => (
               <ImageCard key={image.url} description={image.description} url={image.url} />
@@ -65,10 +66,10 @@ const Home = () => {
 
   return (
     <VStack justify="center" spacing={10}>
-      <MetamaskStatus />
+      {/* <MetamaskStatus /> */}
       {/* <Button onClick={handleGetAllUsers}>Get All users</Button> */}
       {
-        registered ? <Text>You are already registered!</Text> : <Button onClick={handleRegister}>Register</Button>
+        registered ? <Text>Ya estás registrado!</Text> : <Button onClick={handleRegister}>Registrarme</Button>
       }
       <ul>
         {users.map(user => (

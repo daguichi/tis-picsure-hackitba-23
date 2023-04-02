@@ -43,7 +43,7 @@ export default function Footer() {
         justify={{ base: 'center', md: 'space-between' }}
         align={{ base: 'center', md: 'center' }}>
           <Image src={logo} alt='logo' height="40px"/>
-        <Text>© 2023 The Innovation Squad. All rights reserved</Text>
+        <Text>© 2023 The Innovation Squad. Todos los derechos reservados.</Text>
       </Container>
     </Box>
   );

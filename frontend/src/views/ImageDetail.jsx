@@ -28,7 +28,7 @@ const ImageDetail = () => {
 
       toast(
         {
-          title: 'Voted as Valid!',
+          title: 'Votado como Válido!',
           status: 'success',
           isClosable: true,
           duration: 3000,
@@ -59,7 +59,7 @@ const ImageDetail = () => {
 
       toast(
         {
-          title: 'Voted as Invalid!',
+          title: 'Votado como Inválido!',
           status: 'success',
           isClosable: true,
           duration: 3000,
@@ -85,6 +85,7 @@ const ImageDetail = () => {
   useEffect(() => {
     async function getImage() {
       const response = await getImageByUrl(imageUrl);
+      console.log(response)
       setData({
         url: response.url,
         title: response.description,
@@ -126,8 +127,8 @@ const ImageDetail = () => {
                 alt={`Picture of ${data.title}`}
                 roundedTop="lg"
               />
-              <Text fontSize={'2xl'}>{data.validness * 100}% Valid</Text>
-              <Text fontSize={'2xl'}>{data.isVotationOpen ? 'Votacion abierta' : 'Votacion cerrada'}</Text>
+              <Text fontSize={'2xl'}>{data.validness * 100}% Válido</Text>
+              <Text fontSize={'2xl'}>{data.isVotationOpen ? 'Votacion ABIERTA' : 'Votacion CERRADA'}</Text>
             </Box>
             <Box bgColor={bg1}
               rounded="lg"
@@ -137,17 +138,17 @@ const ImageDetail = () => {
               display={'flex'}
               flexDirection={'column'}
             >
-              <Heading>Voting assigned to:</Heading>
+              <Heading>Votación asignada a:</Heading>
               <Wrap>
 
-                {data.assignedVoters.length === 0 ? <Text>No voters yet</Text>
+                {data.assignedVoters.length === 0 ? <Text>Sin votantes asignados</Text>
                   : data.assignedVoters.map((voter) => (
                     <Avatar key={voter} src={getProfilePicture(voter)} cursor={'pointer'} onClick={() => navigate('/user/' + voter)} />
                   ))}
               </Wrap>
               {
                 data.positiveVotes && data.positiveVotes.some(voter => voter.toLowerCase() === account.toLowerCase()) && (
-                  <Text>Ya has votado como Valido</Text>
+                  <Text>Ya has votado como Válido</Text>
                 )
               }
               {
@@ -157,7 +158,7 @@ const ImageDetail = () => {
               }
               {
                 data.negativeVotes && data.negativeVotes.some(voter => voter.toLowerCase() === account.toLowerCase()) && (
-                  <Text>Ya has votado como Invalido</Text>
+                  <Text>Ya has votado como Inválido</Text>
                 )
               }
             </Box>
@@ -169,10 +170,10 @@ const ImageDetail = () => {
               &&
               <Box>
                 <Button leftIcon={<TiTick />} colorScheme='blue' mr={3} onClick={() => handleValid()}>
-                  Valid
+                  Válido
                 </Button>
                 <Button leftIcon={<TiCancel />} colorScheme='red' onClick={() => handleInvalid()}>
-                  Invalid
+                  Inválido
                 </Button>
               </Box>
             }
@@ -182,10 +183,13 @@ const ImageDetail = () => {
                   rounded="lg"
                   p={8}
                   boxShadow="lg">
-                  <Heading>Voted by {data.assignedVoters.length} persons</Heading>
+                  <Heading>Votado por {data.assignedVoters.length} personas</Heading>
                   <VStack>
-                    <Text>Valid: {data.positiveVotes}</Text>
-                    <Text>Invalid: {data.negativeVotes}</Text>
+                    <VStack>
+                    <Text>Válido:</Text>
+                    {data.positiveVotes}
+                    </VStack>
+                    <Text>Inválido: {data.negativeVotes}</Text>
                   </VStack>
                 </Box>
               )
@@ -198,12 +202,12 @@ const ImageDetail = () => {
               display={'flex'}
               flexDirection={'column'}
             >
-              <Heading>Evidences</Heading>
-              {data.comments.length === 0 ? <Text>No evidences yet</Text>
+              <Heading>Evidencias</Heading>
+              {data.comments.length === 0 ? <Text>Sin evidencias todavía</Text>
                 : data.comments.map((comment) => (
                   <Box border={'1px'} borderColor={'white'} borderRadius={'lg'} padding={4}>
-                    <Text>Comment by {comment.user}</Text>
-                    <Text>{comment.comment}</Text>
+                    <Text>Evidencia de <strong>{comment.user}</strong></Text>
+                    <Text>{comment.text}</Text>
                   </Box>
                 ))}
             </Box>

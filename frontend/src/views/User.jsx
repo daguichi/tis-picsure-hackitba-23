@@ -37,11 +37,11 @@ const User = () => {
             Vitalik Butherin
           </Text>
           <HStack>
-            <Text fontSize="2xl">Account:</Text>
+            <Text fontSize="2xl">Cuenta:</Text>
             <Text fontSize="lg" color="gray.500">{accountUser}</Text>
           </HStack>
           <HStack>
-            <Text fontSize="2xl">Reputation:</Text>
+            <Text fontSize="2xl">Reputación:</Text>
             <Text fontSize="lg" color="gray.500">{userData.wins}</Text>
           </HStack>
           <HStack>
@@ -53,11 +53,11 @@ const User = () => {
       </HStack>
 
       <Text fontSize="2xl" fontWeight="bold" mt={4}>
-        Uploaded images
+        Imágenes subidas a votación por el usuario
       </Text>
       <HStack spacing={4} justifyContent="center">
 
-        {ownImages.length === 0 ? <Text fontSize="lg" color="gray.500">No images uploaded</Text>
+        {ownImages.length === 0 ? <Text fontSize="lg" color="gray.500">Sin imágenes</Text>
           :
 
           ownImages.map(image => (
@@ -65,10 +65,9 @@ const User = () => {
           ))}
       </HStack>
       <Text fontSize="2xl" fontWeight="bold" mt={4}>
-        Assigned images
-      </Text>
+        Imágenes asignadas al usuario para votar      </Text>
       <HStack spacing={4} justifyContent="center">
-        {assignedImages.length === 0 ? <Text fontSize="lg" color="gray.500">No images assigned</Text>
+        {assignedImages.length === 0 ? <Text fontSize="lg" color="gray.500">Sin imágenes</Text>
           :
           assignedImages.map(image => (
             <ImageCard key={image.url} description={image.description} url={image.url} />

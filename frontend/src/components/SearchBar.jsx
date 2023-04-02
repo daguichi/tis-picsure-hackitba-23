@@ -51,7 +51,7 @@ const SearchBar = () => {
               marginTop={6}
               alignSelf={"center"}
             >
-              Search
+              Buscar
             </Button>
           </HStack>
         </Container>
