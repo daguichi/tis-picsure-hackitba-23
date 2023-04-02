@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useMetaMask } from 'metamask-react';
-import { Box, Text, useColorModeValue, Avatar, HStack, VStack } from '@chakra-ui/react';
+import { Box, Text, Wrap, useColorModeValue, Avatar, HStack, VStack, Divider, Progress, WrapItem } from '@chakra-ui/react';
 import { getImagesByOwningUser, getImagesByAssignedUser, getUserByAddress } from "../contractMethods";
 import ImageCard from "../components/ImageCard";
 import { useLocation } from 'react-router-dom';
@@ -40,10 +40,7 @@ const User = () => {
             <Text fontSize="2xl">Cuenta:</Text>
             <Text fontSize="lg" color="gray.500">{accountUser}</Text>
           </HStack>
-          <HStack>
-            <Text fontSize="2xl">Reputación:</Text>
-            <Text fontSize="lg" color="gray.500">{userData.wins}</Text>
-          </HStack>
+
           <HStack>
             <Text fontSize="2xl">Tokens:</Text>
             <Text fontSize="lg" color="gray.500">{userData.tokens}</Text>
@@ -51,28 +48,38 @@ const User = () => {
         </VStack>
 
       </HStack>
+      <Divider my={8} />
+      <Text fontSize="3xl" fontWeight="bold" my={8}>
+        Reputación del {userData.wins}%
+      </Text>
+      <Progress colorScheme='green' size='lg' value={userData.wins} mt={8} />
+      <Divider my={8} />
 
-      <Text fontSize="2xl" fontWeight="bold" mt={4}>
+      <Text fontSize="3xl" fontWeight="bold" mt={4}>
         Imágenes subidas a votación por el usuario
       </Text>
-      <HStack spacing={4} justifyContent="center">
+      <Wrap spacing={4} justifyContent="center" align="center">
 
         {ownImages.length === 0 ? <Text fontSize="lg" color="gray.500">Sin imágenes</Text>
           :
 
           ownImages.map(image => (
-            <ImageCard key={image.url} description={image.description} url={image.url} />
+            <WrapItem key={image.url}>
+              <ImageCard key={image.url} description={image.description} url={image.url} />
+            </WrapItem>
           ))}
-      </HStack>
-      <Text fontSize="2xl" fontWeight="bold" mt={4}>
+      </Wrap>
+      <Text fontSize="3xl" fontWeight="bold" mt={4}>
         Imágenes asignadas al usuario para votar      </Text>
-      <HStack spacing={4} justifyContent="center">
+        <Wrap spacing={4} justifyContent="center" align="center">
         {assignedImages.length === 0 ? <Text fontSize="lg" color="gray.500">Sin imágenes</Text>
           :
           assignedImages.map(image => (
-            <ImageCard key={image.url} description={image.description} url={image.url} />
+            <WrapItem key={image.url}>
+              <ImageCard key={image.url} description={image.description} url={image.url} />
+            </WrapItem>
           ))}
-      </HStack>
+      </Wrap>
     </Box>
   );
 };

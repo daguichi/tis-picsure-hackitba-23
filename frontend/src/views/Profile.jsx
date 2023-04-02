@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useMetaMask } from 'metamask-react';
-import { Box, Text, useColorModeValue, Avatar, HStack, VStack, WrapItem, Wrap, Divider, Button } from '@chakra-ui/react';
+import { Box, Text, useColorModeValue, Avatar, HStack, VStack, WrapItem, Wrap, Divider, Button, Progress } from '@chakra-ui/react';
 import { getImagesByOwningUser, getImagesByAssignedUser, getUserByAddress, registerUser, getAllUsers } from "../contractMethods";
 import ImageCard from "../components/ImageCard";
 import { getProfilePicture } from '../utils';
@@ -40,6 +40,7 @@ const ProfileView = () => {
     <Box p={6} boxShadow="md" rounded="md"
       bgColor={useColorModeValue("white", "gray.900")}
     >
+
       <HStack display={'flex'} justifyItems={'space-between'}>
         {
           registered ? <Text>Ya estás registrado</Text> : <Button onClick={handleRegister}>Registrarme</Button>
@@ -54,10 +55,6 @@ const ProfileView = () => {
             <Text fontSize="lg" color="gray.500">{account}</Text>
           </HStack>
           <HStack>
-            <Text fontSize="2xl">Reputación:</Text>
-            <Text fontSize="lg" color="gray.500">{userData.wins}</Text>
-          </HStack>
-          <HStack>
             <Text fontSize="2xl">Tokens:</Text>
             <Text fontSize="lg" color="gray.500">{userData.tokens}{'      '}</Text>
             <Button ml={8} colorScheme="blue" size="sm" onClick={() => { }}>Buy</Button>
@@ -67,6 +64,12 @@ const ProfileView = () => {
 
 
       </HStack>
+      <Divider my={8} />
+      <Text fontSize="3xl" fontWeight="bold" my={8}>
+        Reputación del {userData.wins}%
+      </Text>
+      <Progress colorScheme='green' size='lg' value={userData.wins} mt={8} />
+
       <Divider my={8} />
       <Text fontSize="3xl" fontWeight="bold" my={8}>
         Tus imágenes subidas a votación
