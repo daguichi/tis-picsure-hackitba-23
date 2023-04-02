@@ -2,12 +2,13 @@ import {
   Box,
   chakra,
   Container,
+  Image,
   Stack,
   Text,
   useColorModeValue,
   VisuallyHidden,
 } from '@chakra-ui/react';
-
+import logo from '../logo.png'
 const Logo = (props) => {
   return (
     <svg
@@ -41,7 +42,7 @@ export default function Footer() {
         spacing={4}
         justify={{ base: 'center', md: 'space-between' }}
         align={{ base: 'center', md: 'center' }}>
-        <Logo />
+          <Image src={logo} alt='logo' height="40px"/>
         <Text>© 2023 The Innovation Squad. All rights reserved</Text>
       </Container>
     </Box>

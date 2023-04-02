@@ -25,7 +25,7 @@ const ProfileView = () => {
     >
       <HStack mt={4}>
         <Avatar src={getProfilePicture(account)} alt="Profile avatar" rounded="full" boxSize="150px" />
-        <VStack justifyContent="left" ml={16}>
+        <VStack ml={16} alignItems="flex-start">
           <Text fontSize="2xl" fontWeight="bold">
             Vitalik Butherin
           </Text>
@@ -42,6 +42,8 @@ const ProfileView = () => {
             <Text fontSize="lg" color="gray.500">{userData.tokens}</Text>
           </HStack>
         </VStack>
+
+
       </HStack>
 
       <Text fontSize="2xl" fontWeight="bold" mt={8}>
@@ -49,7 +51,7 @@ const ProfileView = () => {
       </Text>
       <HStack spacing={4} justifyContent="center">
         {ownImages.map(image => (
-          <ImageCard key={image.url} description={image.description} url={image.url}/>
+          <ImageCard key={image.url} description={image.description} url={image.url} />
         ))}
       </HStack>
       <Text fontSize="2xl" fontWeight="bold" mt={4}>
@@ -57,7 +59,7 @@ const ProfileView = () => {
       </Text>
       <HStack spacing={4} justifyContent="center">
         {assignedImages.map(image => (
-          <ImageCard key={image.url} description={image.description} url={image.url}/>
+          <ImageCard key={image.url} description={image.description} url={image.url} />
         ))}
       </HStack>
     </Box>

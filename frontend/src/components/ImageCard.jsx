@@ -7,7 +7,6 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 function ImageCard(props) {
-
   const navigate = useNavigate();
 
   return (
@@ -18,7 +17,7 @@ function ImageCard(props) {
       rounded="lg"
       shadow="lg"
       position="relative"
-      cursor={'pointer'}
+      cursor="pointer"
       _hover={{
         transform: 'scale(1.05)',
         shadow: '2xl',
@@ -27,38 +26,37 @@ function ImageCard(props) {
       overflow="hidden"
       onClick={() => {
         navigate(`/image?url=${encodeURIComponent(props.url)}`);
-      }
-      }
+      }}
     >
-
-
       <Image
         src={props.url}
         alt={`Picture of ${props.description}`}
         roundedTop="lg"
+        width="100%"
+        height="auto"
       />
 
-      <Box p="6">
-
-        <Flex mt="1" justifyContent="space-between" alignContent="center">
+      <Box p="6" height="auto">
+        <Flex
+          direction="column"
+          justifyContent="space-between"
+          alignContent="center"
+          height="100%"
+        >
           <Box
             fontSize="2xl"
             fontWeight="semibold"
             as="h4"
             lineHeight="tight"
-            isTruncated>
+            isTruncated
+          >
             {props.description}
           </Box>
-
-        </Flex>
-
-        <Flex justifyContent="space-between" alignContent="center">
-          {/* TODO */}
-          <h1>Valid / Not valid</h1>
         </Flex>
       </Box>
     </Box>
   );
 }
+
 
 export default ImageCard;

@@ -26,6 +26,7 @@ import {
   Input,
   ModalFooter,
   useToast,
+  Image,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
@@ -34,6 +35,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMetaMask } from 'metamask-react';
 import { publishImage } from '../contractMethods';
 import { getProfilePicture } from '../utils';
+import logo from '../logo.png'
 
 function UploadButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -107,9 +109,18 @@ function UploadButton() {
   )
 }
 
-const Links = ['Dashboard', 'Projects', 'Team'];
+const Links = [
+  {
+    name: 'Explorar',
+    href: 'explore'
+  },
+  {
+    name: 'Sobre nosotros',
+    href: 'about-us'
+  }
+];
 
-const NavLink = ({ children }) => (
+const NavLink = ({ children, href }) => (
   <Link
     px={2}
     py={1}
@@ -118,7 +129,8 @@ const NavLink = ({ children }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    href={'#'}>
+    href={href}
+  >
     {children}
   </Link>
 );
@@ -139,15 +151,17 @@ const Nav = () => {
           onClick={isOpen ? onClose : onOpen}
         />
         <HStack spacing={8} alignItems={'center'}>
-          <Box cursor={'pointer'} onClick={() => navigate('/')}>PicSure</Box>
-          {/* <HStack
+          <Box cursor={'pointer'} onClick={() => navigate('/')}>
+            <Image src={logo} alt='logo' height="40px" />
+          </Box>
+          <HStack
             as={'nav'}
             spacing={4}
             display={{ base: 'none', md: 'flex' }}>
             {Links.map((link) => (
-              <NavLink key={link}>{link}</NavLink>
+              <NavLink key={link.name} href={link.href}>{link.name}</NavLink>
             ))}
-          </HStack> */}
+          </HStack>
         </HStack>
         {
           account &&
@@ -163,7 +177,7 @@ const Nav = () => {
                 cursor={'pointer'}
                 minW={0}>
                 <Avatar
-                src={getProfilePicture(account)}
+                  src={getProfilePicture(account)}
                   size={'sm'}
 
                 />

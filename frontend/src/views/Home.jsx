@@ -15,7 +15,7 @@ function ConnectedView() {
 
   return (
     <>
-      <SearchBar />
+      {/* <SearchBar /> */}
       {
         images.length === 0
           ? <Text>No images found</Text>
