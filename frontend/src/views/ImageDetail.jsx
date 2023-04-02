@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Heading, Image, Text, useColorModeValue, useToast, VStack, Wrap } from "@chakra-ui/react";
+import { Avatar, Box, Button, Divider, Heading, HStack, Image, Progress, Text, Tooltip, useColorModeValue, useToast, VStack, Wrap } from "@chakra-ui/react";
 import { useMetaMask } from "metamask-react";
 import { useEffect, useState } from "react";
 import { TiTick, TiCancel } from "react-icons/ti";
@@ -104,9 +104,10 @@ const ImageDetail = () => {
 
   return (
     <>
+
       {
         data && (
-          <VStack>
+          <VStack spacing={8}>
             <Box
               bgColor={bg1}
               rounded="lg"
@@ -121,6 +122,7 @@ const ImageDetail = () => {
               borderColor={data.validness > 0.5 ? 'green.500' : 'red.500'}
               borderWidth={'2px'}
             >
+
               <Heading alignSelf={'center'}>{data.title}</Heading>
               <Image
                 src={data.url}
@@ -128,13 +130,33 @@ const ImageDetail = () => {
                 roundedTop="lg"
               />
               <Text fontSize={'2xl'}>{data.validness * 100}% Válido</Text>
-              <Text fontSize={'2xl'}>{data.isVotationOpen ? 'Votacion ABIERTA' : 'Votacion CERRADA'}</Text>
+
+              <Text fontSize={'2xl'}>{data.isVotationOpen ? 'Votación ABIERTA' : 'Votación CERRADA'}</Text>
             </Box>
+            {
+              data.isVotationOpen && data.assignedVoters && data.assignedVoters.some(voter => voter.toLowerCase() === account.toLowerCase())
+              && data.positiveVotes && !data.positiveVotes.some(voter => voter.toLowerCase() === account.toLowerCase())
+              && data.negativeVotes && !data.negativeVotes.some(voter => voter.toLowerCase() === account.toLowerCase())
+              &&
+              <>
+                <Box w={'70%'}>
+                  <Button leftIcon={<TiTick />} colorScheme='blue' mr={3} onClick={() => handleValid()}>
+                    Válido
+                  </Button>
+                  <Button leftIcon={<TiCancel />} colorScheme='red' onClick={() => handleInvalid()}>
+                    Inválido
+                  </Button>
+                </Box>
+              </>
+            }
+            <Divider w={'70%'} />
+
             <Box bgColor={bg1}
               rounded="lg"
               p={8}
               boxShadow="lg"
               gap={6}
+              w={'70%'}
               display={'flex'}
               flexDirection={'column'}
             >
@@ -143,7 +165,9 @@ const ImageDetail = () => {
 
                 {data.assignedVoters.length === 0 ? <Text>Sin votantes asignados</Text>
                   : data.assignedVoters.map((voter) => (
-                    <Avatar key={voter} src={getProfilePicture(voter)} cursor={'pointer'} onClick={() => navigate('/user/' + voter)} />
+                    <Tooltip label={voter}>
+                      <Avatar key={voter} src={getProfilePicture(voter)} cursor={'pointer'} onClick={() => navigate('/user/' + voter)} />
+                    </Tooltip>
                   ))}
               </Wrap>
               {
@@ -163,51 +187,80 @@ const ImageDetail = () => {
               }
             </Box>
 
-            {
-              data.isVotationOpen && data.assignedVoters && data.assignedVoters.some(voter => voter.toLowerCase() === account.toLowerCase())
-              && data.positiveVotes && !data.positiveVotes.some(voter => voter.toLowerCase() === account.toLowerCase())
-              && data.negativeVotes && !data.negativeVotes.some(voter => voter.toLowerCase() === account.toLowerCase())
-              &&
-              <Box>
-                <Button leftIcon={<TiTick />} colorScheme='blue' mr={3} onClick={() => handleValid()}>
-                  Válido
-                </Button>
-                <Button leftIcon={<TiCancel />} colorScheme='red' onClick={() => handleInvalid()}>
-                  Inválido
-                </Button>
-              </Box>
-            }
+
             {
               !data.isVotationOpen && (
                 <Box bgColor={bg1}
                   rounded="lg"
                   p={8}
+                  w={'70%'}
                   boxShadow="lg">
                   <Heading>Votado por {data.assignedVoters.length} personas</Heading>
-                  <VStack>
-                    <VStack>
-                    <Text>Válido:</Text>
-                    {data.positiveVotes}
-                    </VStack>
-                    <Text>Inválido: {data.negativeVotes}</Text>
-                  </VStack>
+                  <HStack mt={4}>
+                    <Box borderRadius={'md'}
+                      border={'1px'}
+                      borderColor={'green.500'}
+                      borderStyle={'dotted'}
+                      w={'50%'}
+                      p={4}
+                    >
+                      <Text>Válidos: <b>{data.positiveVotes.length}</b></Text>
+                      <Wrap>
+
+                        {data.positiveVotes.length === 0 ? <Text>Sin positivos</Text>
+                          : data.positiveVotes.map((voter) => (
+                            <Tooltip label={voter}>
+                              <Avatar key={voter} src={getProfilePicture(voter)} cursor={'pointer'} onClick={() => navigate('/user/' + voter)} />
+                            </Tooltip>
+                          ))}
+                      </Wrap>
+                    </Box>
+                    <Box borderRadius={'md'}
+                      w={'50%'}
+                      border={'1px'}
+                      borderColor={'red.500'}
+                      borderStyle={'dotted'}
+                      p={4}
+                    >
+                      <Text>Inválidos: <b>{data.negativeVotes.length}</b></Text>
+                      <Wrap>
+
+                        {data.negativeVotes.length === 0 ? <Text>Sin negativos</Text>
+                          : data.negativeVotes.map((voter) => (
+                            <Tooltip label={voter}>
+                              <Avatar key={voter} src={getProfilePicture(voter)} cursor={'pointer'} onClick={() => navigate('/user/' + voter)} />
+                            </Tooltip>
+                          ))}
+                      </Wrap>
+                    </Box>
+                  </HStack>
+
                 </Box>
               )
             }
+            <Divider w={'70%'} />
             <Box bgColor={bg1}
               rounded="lg"
               p={8}
               boxShadow="lg"
               gap={6}
+              w={'70%'}
               display={'flex'}
               flexDirection={'column'}
             >
               <Heading>Evidencias</Heading>
               {data.comments.length === 0 ? <Text>Sin evidencias todavía</Text>
                 : data.comments.map((comment) => (
-                  <Box border={'1px'} borderColor={'white'} borderRadius={'lg'} padding={4}>
-                    <Text>Evidencia de <strong>{comment.user}</strong></Text>
-                    <Text>{comment.text}</Text>
+                  <Box border={'1px'} borderColor={'white'} borderRadius={'lg'} padding={4}
+                    display={'flex'}
+                    flexDirection={'row'}
+                    alignItems={'center'}
+                    spacing={4}
+                  >
+                    <Tooltip label={comment.user}>
+                      <Avatar src={getProfilePicture(comment.user)} cursor={'pointer'} onClick={() => navigate('/user/' + comment.user)} />
+                    </Tooltip>
+                    <Text ml={4} fontStyle={'italic'}>{comment.text}</Text>
                   </Box>
                 ))}
             </Box>
