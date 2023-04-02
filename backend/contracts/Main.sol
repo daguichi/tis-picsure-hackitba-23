@@ -12,8 +12,8 @@ contract MainContract {
 
     struct Image {
         string url;
-        address owner;
         string description;
+        address owner;
         uint uploadDate;
         bool isVotationOpen;
         address[] assignedVoters;
@@ -24,7 +24,10 @@ contract MainContract {
 
     struct User {
         address _address;
-        uint wins;
+        string name;
+        string profilePicUrl;
+        uint validatorReputation;
+        uint creatorReputation;
         uint tokens;
     }
 
@@ -61,11 +64,21 @@ contract MainContract {
 
     /* ---------------------------------- GENERIC FUNCTIONS ---------------------------------- */
 
-    function arrayContains(address[] memory array, address value) private pure returns (bool) {
+    function _arrayContains(address[] memory array, address value) private pure returns (bool) {
         for (uint256 i = 0; i < array.length; i++)
             if (array[i] == value)
                 return true;
         return false;
+    }
+
+    function _getRandomSubset(address[] memory array, uint n) private view returns (address[] memory) {
+        address[] memory subset = new address[](n);
+        uint rand = uint(keccak256(abi.encode(block.timestamp, block.difficulty))) % array.length;
+
+        for (uint i = 0; i < n; i++)
+            subset[i] = array[(i + rand) % array.length];
+
+        return subset;
     }
 
     constructor(address _pohAddress) public {
@@ -80,7 +93,7 @@ contract MainContract {
     }
 
     function registerUser() public {
-        require(!arrayContains(usersAddresses, msg.sender), "User is already registered");
+        require(!_arrayContains(usersAddresses, msg.sender), "User is already registered");
         
         require(_validateIdentity(msg.sender), "User is not registered on Proof of Humanity.");
         
@@ -88,7 +101,10 @@ contract MainContract {
 
         users[msg.sender]._address = msg.sender;
         users[msg.sender].tokens = STARTING_TOKENS;
-        users[msg.sender].wins = 0;
+        users[msg.sender].name = proofOfHumanity.getName(msg.sender);
+        users[msg.sender].profilePicUrl = '';
+        users[msg.sender].validatorReputation = 0;
+        users[msg.sender].creatorReputation = 0;
     }
 
     /* ---------------------------------- USER LISTING ---------------------------------- */
@@ -137,7 +153,7 @@ contract MainContract {
 
         uint count = 0;
         for (uint i = 0; i < imageUrls.length; i++)
-            if (arrayContains(images[imageUrls[i]].assignedVoters, _address))
+            if (_arrayContains(images[imageUrls[i]].assignedVoters, _address))
                 result[count++] = imageUrls[i];
 
         Image[] memory finalResult = new Image[](count);
@@ -156,9 +172,9 @@ contract MainContract {
     function voteImage(string memory _url, Vote _vote) public {
         require(images[_url].assignedVoters.length != 0, "Image doesnt exist");
 
-        require(arrayContains(images[_url].assignedVoters, msg.sender), "Voter not allowed");
+        require(_arrayContains(images[_url].assignedVoters, msg.sender), "Voter not allowed");
 
-        require(!arrayContains(images[_url].positiveVotes, msg.sender) && !arrayContains(images[_url].negativeVotes, msg.sender),
+        require(!_arrayContains(images[_url].positiveVotes, msg.sender) && !_arrayContains(images[_url].negativeVotes, msg.sender),
              "Already voted");
 
         require(images[_url].isVotationOpen, "Voting closed");
@@ -185,7 +201,7 @@ contract MainContract {
             address voterAdd = images[_url].positiveVotes[i];
             if(imageIsTrue) {
                 users[voterAdd].tokens += VERIFY_REWARD;
-                users[voterAdd].wins += 1;
+                users[voterAdd].validatorReputation += 1;
             }
         }
 
@@ -193,9 +209,11 @@ contract MainContract {
             address voterAdd = images[_url].positiveVotes[i];
             if(!imageIsTrue) {
                 users[voterAdd].tokens += VERIFY_REWARD;
-                users[voterAdd].wins += 1;
+                users[voterAdd].validatorReputation += 1;
             }
         }
+
+        users[images[_url].owner].creatorReputation += 1;
     }
 
     /* ---------------------------------- IMAGE COMMENTING ---------------------------------- */
@@ -209,16 +227,6 @@ contract MainContract {
     }    
 
     /* ---------------------------------- IMAGE PUBLISHING ---------------------------------- */
-
-    function _getRandomSubset(address[] memory array, uint n) private view returns (address[] memory) {
-        address[] memory subset = new address[](n);
-        uint rand = uint(keccak256(abi.encode(block.timestamp, block.difficulty))) % array.length;
-
-        for (uint i = 0; i < n; i++)
-            subset[i] = array[(i + rand) % array.length];
-
-        return subset;
-    }
 
     function publishImage(string memory _url, string memory _desc) public {
         require(users[msg.sender].tokens > PUBLISH_COST, "Not enough tokens");

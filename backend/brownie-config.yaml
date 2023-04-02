@@ -4,13 +4,15 @@ networks:
   default: development
   
   goerli:
-    verify: True
-    private_key: ${RINKEBY_PRIVATE_KEY}
-    poh_address: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e'
+    verify: False
+    private_key: ${GOERLI_PRIVATE_KEY}
+    poh_address: '0x58D18Bbf223F0c3D2FCB67086f75144391811701'
   
   ganache-local:
     verify: False
     private_key: ${GANACHE_PRIVATE_KEY}
+    poh_address: '0x91F95Bb79d97bAEfdE6Ab4E431873b4471111Df9'
+    main_address: '0xBfaA0737F4cc5bFc459D52Ca0f60FDE346651E55'
   
   development:
     verify: False
