@@ -49,7 +49,7 @@ export const voteImage = async (url, vote) => {
   const accounts = await window.ethereum.enable();
   const account = accounts[0];
 
-  await contract.methods.voteImage(url, vote).send({ from: account });
+  return await contract.methods.voteImage(url, vote).send({ from: account });
 }
 
 export const commentImage = async (url, comment) => {

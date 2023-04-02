@@ -30,30 +30,40 @@ const AboutUs = () => {
           transition={{ delay: 1.5, duration: 1 }}
         >
           <Box maxW="700px">
-            <Text fontSize="xl" mb={4} fontWeight={'extrabold'}>
-              Nuestro objetivo
+            <Heading as="h1" size="xl" mb={8}>
+              ¡Bienvenido a PicSure!
+            </Heading>
+            <Text fontSize="lg" mb={8}>
+              Somos un protocolo <strong>descentralizado</strong> de{" "}
+              <strong>verificación</strong> de contenido mediado por una comunidad de
+              personas <strong>autenticas</strong>. Dirigido a creadores de contenido
+              que deseen tener una reputación de{" "}
+              <strong>transparencia y originalidad</strong>.
             </Text>
             <Text fontSize="lg" mb={8}>
-              Nuestro objetivo es brindar a nuestros usuarios una experiencia confiable y auténtica al ofrecer su producto.
-            </Text>
-            <Text fontSize="xl" mb={4} fontWeight={'extrabold'}>
-              Proceso democrático de arbitraje
-            </Text>
-            <Text fontSize="lg" mb={8}>
-              En PicSure, todo el contenido en nuestra plataforma es sometido a un proceso democrático de arbitraje, asegurando la transparencia y originalidad del contenido.
-            </Text>
-            <Text fontSize="xl" mb={4} fontWeight={'extrabold'}>
-              Tecnología blockchain
+              Nuestro objetivo es brindar a nuestros usuarios una experiencia
+              confiable y <strong>auténtica</strong> al ofrecer su producto. Nos
+              enorgullece decir que todo el contenido en nuestra plataforma es
+              sometido a un <strong>proceso democrático</strong> de arbitraje.
             </Text>
             <Text fontSize="lg" mb={8}>
-              Trabajamos con un sistema basado en tecnología blockchain, similar al protocolo de Proof of Humanity y Kleros, para garantizar la veracidad de la información de nuestros clientes.
-            </Text>
-            <Text fontSize="xl" mb={4} fontWeight={'extrabold'}>
-              Autenticidad es la clave
+              Trabajamos con un sistema basado en tecnología blockchain, similar al
+              protocolo de Proof of Humanity y Kleros, para garantizar la veracidad de
+              la informacion de nuestros clientes.
             </Text>
             <Text fontSize="lg" mb={8}>
-              En PicSure, creemos que la autenticidad es la clave para construir confianza y credibilidad en el mundo digital. Mejora tu reputación compartiendo contenido legítimo.
+              En PicSure, creemos que la <strong>autenticidad</strong> es la clave
+              para construir <strong>confianza</strong> y{" "}
+              <strong>credibilidad</strong> en el mundo digital. Mejora tu reputacion
+              compartiendo contenido <strong>legitimo</strong>.
             </Text>
+            <Text fontSize='lg' mb={8}>
+              Estamos emocionados de ser parte de tu experiencia en línea!
+            </Text>
+            <Text fontSize="xl" mb={4} fontWeight={'extrabold'}>
+              ¿Estas listo para unirte a la era de la transparencia digital?
+            </Text>
+            
           </Box>
         </motion.div>
       </Flex>

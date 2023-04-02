@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Heading, Image, Text, useColorModeValue, VStack, Wrap } from "@chakra-ui/react";
+import { Avatar, Box, Button, Heading, Image, Text, useColorModeValue, useToast, VStack, Wrap } from "@chakra-ui/react";
 import { useMetaMask } from "metamask-react";
 import { useEffect, useState } from "react";
 import { TiTick, TiCancel } from "react-icons/ti";
@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import { getImageByUrl } from "../contractMethods";
 import { getProfilePicture } from "../utils";
-
+import { voteImage } from "../contractMethods";
 
 const ImageDetail = () => {
 
@@ -18,6 +18,70 @@ const ImageDetail = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const bg1 = useColorModeValue("white", "gray.900");
+
+  const toast = useToast()
+
+  const handleValid = async () => {
+    const vote = await voteImage(imageUrl, 0);
+    console.log(vote)
+    if (vote.status === true) {
+
+      toast(
+        {
+          title: 'Voted as Valid!',
+          status: 'success',
+          isClosable: true,
+          duration: 3000,
+        }
+      )
+
+      const response = await getImageByUrl(imageUrl);
+      setData({
+        url: response.url,
+        title: response.description,
+        owner: response.owner,
+        uploadDate: response.uploadDate,
+        isVotationOpen: response.isVotationOpen,
+        assignedVoters: response.assignedVoters,
+        positiveVotes: response.positiveVotes,
+        negativeVotes: response.negativeVotes,
+        comments: response.comments,
+        validness: response.positiveVotes.length / response.assignedVoters.length
+      });
+    }
+    return vote;
+  }
+
+  const handleInvalid = async () => {
+    const vote = await voteImage(imageUrl, 1);
+    console.log(vote)
+    if (vote.status === true) {
+
+      toast(
+        {
+          title: 'Voted as Invalid!',
+          status: 'success',
+          isClosable: true,
+          duration: 3000,
+        }
+      )
+      const response = await getImageByUrl(imageUrl);
+      setData({
+        url: response.url,
+        title: response.description,
+        owner: response.owner,
+        uploadDate: response.uploadDate,
+        isVotationOpen: response.isVotationOpen,
+        assignedVoters: response.assignedVoters,
+        positiveVotes: response.positiveVotes,
+        negativeVotes: response.negativeVotes,
+        comments: response.comments,
+        validness: response.positiveVotes.length / response.assignedVoters.length
+      });
+    }
+    return vote;
+  }
+
   useEffect(() => {
     async function getImage() {
       const response = await getImageByUrl(imageUrl);
@@ -63,6 +127,7 @@ const ImageDetail = () => {
                 roundedTop="lg"
               />
               <Text fontSize={'2xl'}>{data.validness * 100}% Valid</Text>
+              <Text fontSize={'2xl'}>{data.isVotationOpen ? 'Votacion abierta' : 'Votacion cerrada'}</Text>
             </Box>
             <Box bgColor={bg1}
               rounded="lg"
@@ -80,14 +145,33 @@ const ImageDetail = () => {
                     <Avatar key={voter} src={getProfilePicture(voter)} cursor={'pointer'} onClick={() => navigate('/user/' + voter)} />
                   ))}
               </Wrap>
+              {
+                data.positiveVotes && data.positiveVotes.some(voter => voter.toLowerCase() === account.toLowerCase()) && (
+                  <Text>Ya has votado como Valido</Text>
+                )
+              }
+              {
+                data.assignedVoters && !data.assignedVoters.some(voter => voter.toLowerCase() === account.toLowerCase()) && (
+                  <Text>No te han asignado para votar</Text>
+                )
+              }
+              {
+                data.negativeVotes && data.negativeVotes.some(voter => voter.toLowerCase() === account.toLowerCase()) && (
+                  <Text>Ya has votado como Invalido</Text>
+                )
+              }
             </Box>
+
             {
-              data.isVotationOpen && data.assignedVoters.includes(account) &&
+              data.isVotationOpen && data.assignedVoters && data.assignedVoters.some(voter => voter.toLowerCase() === account.toLowerCase())
+              && data.positiveVotes && !data.positiveVotes.some(voter => voter.toLowerCase() === account.toLowerCase())
+              && data.negativeVotes && !data.negativeVotes.some(voter => voter.toLowerCase() === account.toLowerCase())
+              &&
               <Box>
-                <Button leftIcon={<TiTick />} colorScheme='blue' mr={3} onClick={() => console.log('accept')}>
+                <Button leftIcon={<TiTick />} colorScheme='blue' mr={3} onClick={() => handleValid()}>
                   Valid
                 </Button>
-                <Button leftIcon={<TiCancel />} colorScheme='red' onClick={() => console.log('Invalid')}>
+                <Button leftIcon={<TiCancel />} colorScheme='red' onClick={() => handleInvalid()}>
                   Invalid
                 </Button>
               </Box>
