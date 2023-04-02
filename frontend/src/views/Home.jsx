@@ -77,7 +77,7 @@ const Home = () => {
         ))}
       </ul> */}
       {
-        status === "connected" ? <ConnectedView /> : <></>
+        status === "connected" ? <ConnectedView /> : <Text>Connect to Metamask & Register</Text>
       }
     </VStack>
   );
