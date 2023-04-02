@@ -1,8 +1,5 @@
 from brownie import network, config, accounts
 
-LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["development", "ganache-local"]
-
-
 def get_account():
     if network.show_active() == "development":
         return accounts[0]
