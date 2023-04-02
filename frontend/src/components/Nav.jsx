@@ -33,6 +33,7 @@ import { ColorModeSwitcher } from '../ColorModeSwitcher';
 import { useNavigate } from 'react-router-dom';
 import { useMetaMask } from 'metamask-react';
 import { publishImage } from '../contractMethods';
+import { getProfilePicture } from '../utils';
 
 function UploadButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -162,6 +163,7 @@ const Nav = () => {
                 cursor={'pointer'}
                 minW={0}>
                 <Avatar
+                src={getProfilePicture(account)}
                   size={'sm'}
 
                 />

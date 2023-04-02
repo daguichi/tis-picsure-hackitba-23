@@ -3,7 +3,9 @@ import { useMetaMask } from "metamask-react";
 import { useEffect, useState } from "react";
 import { TiTick, TiCancel } from "react-icons/ti";
 import { useLocation, useNavigate } from "react-router-dom";
+import Web3 from "web3";
 import { getImageByUrl } from "../contractMethods";
+import { getProfilePicture } from "../utils";
 
 
 const ImageDetail = () => {
@@ -76,7 +78,7 @@ const ImageDetail = () => {
 
                 {data.assignedVoters.length === 0 ? <Text>No voters yet</Text>
                   : data.assignedVoters.map((voter) => (
-                    <Avatar key={voter} cursor={'pointer'} onClick={() => navigate('/user/' + voter)} />
+                    <Avatar key={voter} src={getProfilePicture(voter)} cursor={'pointer'} onClick={() => navigate('/user/' + voter)} />
                   ))}
               </Wrap>
             </Box>

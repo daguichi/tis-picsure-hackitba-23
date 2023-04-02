@@ -3,6 +3,7 @@ import { useMetaMask } from 'metamask-react';
 import { Box, Text, useColorModeValue, Avatar, HStack, VStack } from '@chakra-ui/react';
 import { getImagesByOwningUser, getImagesByAssignedUser, getUserByAddress } from "../contractMethods";
 import ImageCard from "../components/ImageCard";
+import { getProfilePicture } from '../utils';
 
 
 const ProfileView = () => {
@@ -23,7 +24,7 @@ const ProfileView = () => {
       bgColor={useColorModeValue("white", "gray.900")}
     >
       <HStack mt={4}>
-        <Avatar alt="Profile avatar" rounded="full" boxSize="150px" />
+        <Avatar src={getProfilePicture(account)} alt="Profile avatar" rounded="full" boxSize="150px" />
         <VStack justifyContent="left" ml={16}>
           <Text fontSize="2xl" fontWeight="bold">
             Vitalik Butherin

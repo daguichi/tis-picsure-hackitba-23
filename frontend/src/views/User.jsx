@@ -4,6 +4,7 @@ import { Box, Text, useColorModeValue, Avatar, HStack } from '@chakra-ui/react';
 import { getImagesByOwningUser, getImagesByAssignedUser } from "../contractMethods";
 import ImageCard from "../components/ImageCard";
 import { useLocation } from 'react-router-dom';
+import { getProfilePicture } from '../utils';
 
 
 const User = () => {
@@ -26,7 +27,7 @@ const User = () => {
     <Box p={6} boxShadow="md" rounded="md"
       bgColor={useColorModeValue("white", "gray.900")}
     >
-      <Avatar alt="Profile avatar" rounded="full" boxSize="150px" />
+      <Avatar src={getProfilePicture(accountUser)} alt="Profile avatar" rounded="full" boxSize="150px" />
       <Text fontSize="2xl" fontWeight="bold" mt={4}>
         Account
       </Text>
