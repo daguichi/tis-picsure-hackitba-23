@@ -164,35 +164,37 @@ const Nav = () => {
             ))}
           </HStack>
         </HStack>
+        <Flex alignItems={'center'}>
+          <ColorModeSwitcher mr={4} />
+          {
+            account ?
+              <>
+                <UploadButton />
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={'full'}
+                    variant={'link'}
+                    cursor={'pointer'}
+                    minW={0}>
+                    <Avatar
+                      src={getProfilePicture(account)}
+                      size={'sm'}
 
-        {
-          account ?
-
-          <Flex alignItems={'center'}>
-            <ColorModeSwitcher mr={4}/>
-            <UploadButton />
-            <Menu>
-              <MenuButton
-                as={Button}
-                rounded={'full'}
-                variant={'link'}
-                cursor={'pointer'}
-                minW={0}>
-                <Avatar
-                  src={getProfilePicture(account)}
-                  size={'sm'}
-
-                />
-              </MenuButton>
-              <MenuList>
-                <MenuItem onClick={() => navigate('/profile')}>Perfil</MenuItem>
-                {/* <MenuDivider />
+                    />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem onClick={() => navigate('/profile')}>Perfil</MenuItem>
+                    {/* <MenuDivider />
               <MenuItem>Log out</MenuItem> */}
-              </MenuList>
-            </Menu>
-          </Flex> :
-          <MetamaskStatus/>
-        }
+                  </MenuList>
+                </Menu>
+              </>
+              :
+              <MetamaskStatus />
+          }
+        </Flex>
+
 
       </Flex>
 
