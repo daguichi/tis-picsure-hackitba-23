@@ -25,14 +25,17 @@ import ImageDetail from './views/ImageDetail';
 import Profile from './views/Profile';
 import User from './views/User';
 import AboutUs from './views/AboutUs';
+import { useMetaMask } from 'metamask-react';
 
 function App() {
+  const { status, connect, account, chainId, ethereum } = useMetaMask();
+
   return (
     <ChakraProvider theme={theme}>
       <Router basename={process.env.PUBLIC_URL}>
         <Routes>
           <Route path="/" element={<MainLayout />} >
-            <Route index element={<Navigate to={'/profile'} />} />
+            <Route index element={<Navigate to={status === 'connected' ? '/profile' : '/about-us'} /> } />
             <Route path='explore' element={<Home />} />
             <Route path='image' element={<ImageDetail />} />
             <Route path='profile' element={<Profile />} />

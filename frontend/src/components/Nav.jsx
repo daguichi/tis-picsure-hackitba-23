@@ -36,6 +36,7 @@ import { useMetaMask } from 'metamask-react';
 import { publishImage } from '../contractMethods';
 import { getProfilePicture } from '../utils';
 import logo from '../logo.png'
+import MetamaskStatus from '../MetamaskStatus';
 
 function UploadButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -163,11 +164,12 @@ const Nav = () => {
             ))}
           </HStack>
         </HStack>
+
         {
-          account &&
+          account ?
 
           <Flex alignItems={'center'}>
-            <ColorModeSwitcher />
+            <ColorModeSwitcher mr={4}/>
             <UploadButton />
             <Menu>
               <MenuButton
@@ -188,7 +190,8 @@ const Nav = () => {
               <MenuItem>Log out</MenuItem> */}
               </MenuList>
             </Menu>
-          </Flex>
+          </Flex> :
+          <MetamaskStatus/>
         }
 
       </Flex>

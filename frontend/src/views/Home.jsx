@@ -1,9 +1,10 @@
-import { Button, HStack, Text, VStack, Wrap } from "@chakra-ui/react";
+import { Button, Divider, Heading, HStack, Text, VStack, Wrap } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import ImageCard from "../components/ImageCard";
 import SearchBar from "../components/SearchBar";
 import { useMetaMask } from "metamask-react";
 import { getAllImages, getAllUsers, registerUser } from "../contractMethods";
+import MetamaskStatus from "../MetamaskStatus";
 
 
 function ConnectedView() {
@@ -15,6 +16,8 @@ function ConnectedView() {
 
   return (
     <>
+      <Divider my={4} />
+      <Heading>Latest images 📷</Heading>
       {/* <SearchBar /> */}
       {
         images.length === 0
@@ -32,20 +35,6 @@ function ConnectedView() {
 }
 
 
-const MetamaskStatus = () => {
-  const { status, connect, account, chainId, ethereum } = useMetaMask();
-
-  if (status === "initializing") return <Text>Synchronisation with MetaMask ongoing...</Text>
-
-  if (status === "unavailable") return <Text>MetaMask not available :(</Text>
-
-  if (status === "notConnected") return <Button onClick={connect}>Connect to MetaMask</Button>
-
-  if (status === "connecting") return <Text>Connecting...</Text>
-
-  if (status === "connected") return <Text>Connected account <b>{account}</b> on chain ID <b>{chainId}</b></Text>
-
-}
 
 const Home = () => {
   const { status } = useMetaMask();
