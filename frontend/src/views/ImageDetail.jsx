@@ -119,7 +119,7 @@ const ImageDetail = () => {
               display={'flex'}
               flexDirection={'column'}
               gap={6}
-              borderColor={data.validness > 0.5 ? 'green.500' : 'red.500'}
+              borderColor={!data.isVotationOpen ? (data.validness > 0.5 ? 'green.500' : 'red.500') : null}
               borderWidth={'2px'}
             >
 
@@ -129,9 +129,15 @@ const ImageDetail = () => {
                 alt={`Picture of ${data.title}`}
                 roundedTop="lg"
               />
-              <Text fontSize={'2xl'}>{data.validness * 100}% Válido</Text>
+              {
+                !data.isVotationOpen &&
+                <Text fontSize={'2xl'}>{data.validness * 100}% Válido</Text>
+              }
 
               <Text fontSize={'2xl'}>{data.isVotationOpen ? 'Votación ABIERTA' : 'Votación CERRADA'}</Text>
+              <Text fontSize={'lg'}>{
+                data.isVotationOpen ? 'Todavía no se pueden sacar conclusiones acerca de la validez de la imagen' : 'La votación ha finalizado y se puede sacar una conclusión acerca de la validez de la imagen'
+              }</Text>
             </Box>
             {
               data.isVotationOpen && data.assignedVoters && data.assignedVoters.some(voter => voter.toLowerCase() === account.toLowerCase())
